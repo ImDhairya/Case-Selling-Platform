@@ -2,15 +2,18 @@ import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Link from "next/link";
 import {cn} from "@/lib/utils";
-import {buttonVariants} from "./ui/button";
+import {Button, buttonVariants} from "./ui/button";
 import {ArrowRight} from "lucide-react";
+import {useAuth} from "@clerk/nextjs";
+import {SignOutButton} from "@clerk/nextjs";
+import {currentUser} from "@clerk/nextjs/server";
 
-const Navbar = () => {
-  // const {getUser} = getKindeServerSession();
-  // const user = await getUser();
-  const user = undefined;
+const Navbar = async () => {
+  // const {userId} = auth(); // will just give the userId (not much of use for now)
+  const user = await currentUser();
 
-  // const isAdmin = user?.email === process.env.ADMIN_EMAIL;
+  const isAdmin = true; // to be worked up later
+  // console.log(user, "UIUUUUUUUUUUUUUUUU");
 
   return (
     <nav className="sticky z-[100] h-14 inset-x-0 top-0 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
@@ -26,7 +29,7 @@ const Navbar = () => {
           <div className="h-full flex items-center space-x-4">
             {user ? (
               <>
-                <Link
+                {/* <Link
                   href={"/api/auth/logout"}
                   className={cn(
                     buttonVariants({
@@ -36,7 +39,11 @@ const Navbar = () => {
                   )}
                 >
                   Sign out
-                </Link>
+                </Link> */}
+                <p className=" font-bold text-[18px] ">
+                  <SignOutButton />
+                </p>
+
                 {isAdmin ? (
                   <Link
                     href={"/api/auth/logout"}
@@ -68,7 +75,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link
-                  href={"/api/auth/register"}
+                  href={"/sign-up"}
                   className={cn(
                     buttonVariants({
                       size: "sm",
@@ -80,7 +87,7 @@ const Navbar = () => {
                 </Link>
 
                 <Link
-                  href={"/api/auth/login"}
+                  href={"/sign-in"}
                   className={cn(
                     buttonVariants({
                       size: "sm",
